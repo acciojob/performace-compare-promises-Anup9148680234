@@ -12,4 +12,28 @@ const apiUrls = [
   "https://jsonplaceholder.typicode.com/todos/10",
 ];
 
-// You can write your code here
+function fetchData(url) {
+  return fetch(url).then((response) => response.json());
+}
+
+const startAll = performance.now();
+Promise.all(apiUrls.map(fetchData))
+  .then((results) => {
+    const endAll = performance.now();
+    const timeTakenAll = (endAll - startAll) / 1000;
+    document.getElementById("output-all").innerText = timeTakenAll.toFixed(3);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+const startAny = performance.now();
+Promise.any(apiUrls.map(fetchData))
+  .then((result) => {
+    const endAny = performance.now();
+    const timeTakenAny = (endAny - startAny) / 1000;
+    document.getElementById("output-any").innerText = timeTakenAny.toFixed(3);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
